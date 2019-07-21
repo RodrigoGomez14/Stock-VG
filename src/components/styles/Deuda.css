@@ -1,0 +1,13 @@
+.deuda{
+    color:white;
+    border-radius: 25px;
+    animation: product 1s both; 
+}
+@keyframes product{
+    from{
+        transform: scale(0)
+    }
+    to{
+        transform: scale(1)
+    }
+}
