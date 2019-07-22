@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import NavBar from "../components/NavBar"
+import Login from "../components/Login"
 import SpinnerLoading from "../components/SpinnerLoading"
 import * as firebase from "firebase"
 import FichaProovedor from "../components/FichaProovedor"
@@ -8,6 +9,7 @@ import "./Styles/ProovedoresList.css"
 
 class ExpresosList extends Component {
     state = {
+        user: undefined,
         loading: true,
         error: null,
         cliente: undefined,
@@ -39,6 +41,7 @@ class ExpresosList extends Component {
         })
     }
     componentDidMount() {
+        this.authListener()
         this.fetchData()
     }
     handleClick(expreso) {
@@ -46,47 +49,74 @@ class ExpresosList extends Component {
             expreso: expreso
         })
     }
-    render() {
-        if (this.state.loading) {
-            return (
-                <div>
-                    <NavBar />
-                    <SpinnerLoading />
-                </div>
-            )
-        }
-        else {
-            if (this.state.expreso) {
-                const expreso = this.state.expresos[this.state.expreso]
-                return (
-                    <div>
-                        <NavBar />
-                        <FichaProovedor proovedor={expreso} />
-                    </div>
-                )
+    authListener() {
+        firebase.auth().onAuthStateChanged((user) => {
+            console.log(user)
+            if (user) {
+                this.setState({ user })
+                console.log("user added")
             }
             else {
-                return (
-                    <div>
-                        <NavBar />
-                        <div className="productList">
-                            <div className="container-fluid">
-                                <div className="row">
-                                    {Object.values(this.state.expresos).map(expreso => (
-                                        <div className="col-12 text-center form-group">
-                                            <button type="button" className="btn btn-primary btn-cliente" onClick={() => {
-                                                this.handleClick(expreso.datos.nombre)
-                                            }}>
-                                                {expreso.datos.nombre}
-                                            </button>
+                this.setState({
+                    user: null
+                })
+                console.log("user quit")
+            }
+        })
+    }
+    logOut() {
+        firebase.auth().signOut()
+    }
+    render() {
+        try {
+            const user = this.state.user.email
+            if (user) {
+                if (this.state.loading) {
+                    return (
+                        <div>
+                            <NavBar handleClick={this.logOut} />
+                            <SpinnerLoading />
+                        </div>
+                    )
+                }
+                else {
+                    if (this.state.expreso) {
+                        const expreso = this.state.expresos[this.state.expreso]
+                        return (
+                            <div>
+                                <FichaProovedor proovedor={expreso} />
+                            </div>
+                        )
+                    }
+                    else {
+                        return (
+                            <div>
+                                <NavBar handleClick={this.logOut} />
+                                <div className="productList">
+                                    <div className="container-fluid">
+                                        <div className="row">
+                                            {Object.values(this.state.expresos).map(expreso => (
+                                                <div className="col-12 text-center form-group">
+                                                    <button type="button" className="btn btn-primary btn-cliente" onClick={() => {
+                                                        this.handleClick(expreso.datos.nombre)
+                                                    }}>
+                                                        {expreso.datos.nombre}
+                                                    </button>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                )
+                        )
+                    }
+                }
             }
+        }
+        catch{
+            return (
+                <Login redirect="Expresos" />
+            )
         }
     }
 }

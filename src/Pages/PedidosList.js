@@ -72,6 +72,9 @@ class PedidosList extends Component {
     async eliminarPedido(key) {
         await firebase.database().ref().child('pedidos2').child(key).remove()
     }
+    logOut() {
+        firebase.auth().signOut()
+    }
     render() {
         if (!this.state.user) {
             return (
@@ -82,7 +85,7 @@ class PedidosList extends Component {
             if (this.state.loading) {
                 return (
                     <div>
-                        <NavBar />
+                        <NavBar handleClick={this.logOut} />
                         <SpinnerLoading />
                     </div>
                 )
@@ -91,7 +94,7 @@ class PedidosList extends Component {
                 if (this.state.pedidos) {
                     return (
                         <div>
-                            <NavBar />
+                            <NavBar handleClick={this.logOut} />
                             <div className="productList">
                                 <div className="container-fluid">
                                     <div className="row">
@@ -111,7 +114,7 @@ class PedidosList extends Component {
                 else {
                     return (
                         <div>
-                            <NavBar />
+                            <NavBar handleClick={this.logOut} />
                             <div className="productList">
                                 <div className="container">
                                     <div className="row">

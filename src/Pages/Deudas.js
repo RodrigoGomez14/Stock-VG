@@ -1,11 +1,13 @@
 import React, { Component } from "react"
 import NavBar from "../components/NavBar"
+import Login from "../components/Login"
 import SpinnerLoading from "../components/SpinnerLoading"
 import Deuda from "../components/Deuda"
 import * as firebase from "firebase"
 
 class Deudas extends Component {
     state = {
+        user: undefined,
         loading: true,
         error: null,
         deudas: []
@@ -44,7 +46,23 @@ class Deudas extends Component {
             )
         })
     }
+    authListener() {
+        firebase.auth().onAuthStateChanged((user) => {
+            console.log(user)
+            if (user) {
+                this.setState({ user })
+                console.log("user added")
+            }
+            else {
+                this.setState({
+                    user: null
+                })
+                console.log("user quit")
+            }
+        })
+    }
     componentDidMount() {
+        this.authListener()
         this.fetchData()
     }
     async updateDeuda(cliente, nuevaDeuda) {
@@ -54,29 +72,44 @@ class Deudas extends Component {
         })
 
     }
+    logOut() {
+        firebase.auth().signOut()
+    }
     render() {
-        if (this.state.loading) {
+        try{
+            const user = this.state.user.email
+            if(user){
+                    if (this.state.loading) {
+                        return (
+                            <div>
+                                <NavBar handleClick={this.logOut} />
+                                <SpinnerLoading />
+                            </div>
+                        )
+                    }
+                    else {
+                        return (
+                            <div>
+                                <NavBar handleClick={this.logOut} />
+                                <div className="productList">
+                                    <div className="container">
+                                        <div className="row">
+                                            {this.state.deudas.map(cliente => (
+                                                <Deuda cliente={cliente[0]} deuda={cliente[1]} handleClick={this.updateDeuda} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    }
+            }
+        }
+        catch{
             return (
-                <div>
-                    <NavBar />
-                    <SpinnerLoading />
-                </div>
+                <Login redirect="Deudas" />
             )
         }
-        return (
-            <div>
-                <NavBar />
-                <div className="productList">
-                    <div className="container">
-                        <div className="row">
-                            {this.state.deudas.map(cliente => (
-                                <Deuda cliente={cliente[0]} deuda={cliente[1]} handleClick={this.updateDeuda} />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
     }
 }
 export default Deudas

@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import NavBar from "../components/NavBar"
+import Login from "../components/Login"
 import Product from "../components/Product"
 import SpinnerLoading from "../components/SpinnerLoading"
 import * as firebase from "firebase"
@@ -14,6 +15,7 @@ import WayneSimpleDL1 from "../images/WayneSimpleDL1.png"
 
 class SurtidoresList extends Component {
     state = {
+        user: undefined,
         loading: true,
         error: null,
         products: [],
@@ -52,34 +54,63 @@ class SurtidoresList extends Component {
             })
         })
     }
+    authListener() {
+        firebase.auth().onAuthStateChanged((user) => {
+            console.log(user)
+            if (user) {
+                this.setState({ user })
+                console.log("user added")
+            }
+            else {
+                this.setState({
+                    user: null
+                })
+                console.log("user quit")
+            }
+        })
+    }
     componentDidMount() {
+        this.authListener()
         this.fetchData()
     }
+    logOut() {
+        firebase.auth().signOut()
+    }
     render() {
-        if (this.state.loading) {
-            return (
-                <div>
-                    <NavBar />
-                    <SpinnerLoading />
-                </div>
-            )
-        }
-        else {
-            return (
-                <div>
-                    <NavBar />
-                    <div className="productList">
-                        <div className="container-fluid">
-                            <div className="row">
-                                {Object.values(this.state.products).map(producto => (
-                                    <div className="col-3 form-group text-center">
-                                        <Product nombre={producto.nombre} cantidad={producto.cantidad} imagen={this.state.images[producto.nombre]} seccion="Surtidores" />
+        try {
+            const user = this.state.user.email
+            if (user) {
+                if (this.state.loading) {
+                    return (
+                        <div>
+                            <NavBar handleClick={this.logOut} />
+                            <SpinnerLoading />
+                        </div>
+                    )
+                }
+                else {
+                    return (
+                        <div>
+                            <NavBar handleClick={this.logOut} />
+                            <div className="productList">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        {Object.values(this.state.products).map(producto => (
+                                            <div className="col-3 form-group text-center">
+                                                <Product nombre={producto.nombre} cantidad={producto.cantidad} imagen={this.state.images[producto.nombre]} seccion="Surtidores" />
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    )
+                }
+            }
+        }
+        catch{
+            return (
+                <Login redirect="surtidores" />
             )
         }
     }

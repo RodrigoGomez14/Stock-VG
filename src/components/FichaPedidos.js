@@ -9,7 +9,7 @@ class Fichapedido extends Component {
                 <div className="container">
                     <div className="row">
                         {Object.keys(this.props.data).map(pedido => (
-                            <div className="col-4 form-group">
+                            <div className="col-4 form-group d-flex align-items-center">
                                 <PedidoCliente data={this.props.data[pedido]} />
                             </div>
                         ))}

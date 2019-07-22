@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react"
 import NavBar from "../components/NavBar"
+import Login from "../components/Login"
 import SpinnerLoading from "../components/SpinnerLoading"
 import ProductElection from "../components/ProductElection"
 import * as firebase from "firebase"
@@ -90,10 +91,30 @@ class NuevoPedido extends Component {
             articulos: arr
         })
     }
+    logOut() {
+        firebase.auth().signOut()
+    }
+    authListener() {
+        firebase.auth().onAuthStateChanged((user) => {
+            console.log(user)
+            if (user) {
+                this.setState({ user })
+                console.log("user added")
+            }
+            else {
+                this.setState({
+                    user: null
+                })
+                console.log("user quit")
+            }
+        })
+    }
     componentDidMount() {
+        this.authListener()
         this.fetchData()
     }
     state = {
+        user: undefined,
         loading: true,
         error: null,
         pedido: [],
@@ -163,46 +184,58 @@ class NuevoPedido extends Component {
         })
     }
     render() {
-        if (this.state.loading) {
-            return (
-                <Fragment>
-                    <NavBar />
-                    <SpinnerLoading />
-                </Fragment>
-            )
-        }
-        else {
-            return (
-                <div>
-                    <NavBar />
-                    <div className="productList">
-                        <div className="container-fluid">
-                            <div className="row">
-                                <div className="col-12 text-center">
-                                    <h1>Elegir Productos</h1>
+        try {
+            let user = undefined
+            user = this.state.user.email
+            if (user) {
+                if (this.state.loading) {
+                    return (
+                        <Fragment>
+                            <NavBar />
+                            <SpinnerLoading />
+                        </Fragment>
+                    )
+                }
+                else {
+                    return (
+                        <div>
+                            <NavBar handleClick={this.logOut} />
+                            <div className="productList">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-12 text-center">
+                                            <h1>Elegir Productos</h1>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        {Object.values(this.state.products).map(producto => (
+                                            <div className="col-2 form-group text-center">
+                                                <ProductElection handleClick={e => {
+                                                    this.agregarArticulo(producto.nombre, prompt(producto.nombre))
+                                                }} nombre={producto.nombre} imagen={this.state.images[producto.nombre]} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="row">
+                                        <ResumenPedido pedido={this.state.pedido}
+                                            enviarPedido={e => (
+                                                this.enviarPedido()
+                                            )}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                            <div className="row">
-                                {Object.values(this.state.products).map(producto => (
-                                    <div className="col-2 form-group text-center">
-                                        <ProductElection handleClick={e => {
-                                            this.agregarArticulo(producto.nombre, prompt(producto.nombre))
-                                        }} nombre={producto.nombre} imagen={this.state.images[producto.nombre]} />
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="row">
-                                <ResumenPedido pedido={this.state.pedido}
-                                    enviarPedido={e => (
-                                        this.enviarPedido()
-                                    )}
-                                />
-                            </div>
                         </div>
-                    </div>
-                </div>
+                    )
+                }
+            }
+        }
+        catch (error) {
+            return (
+                <Login redirect="NuevoPedido" />
             )
         }
+
     }
 }
 export default NuevoPedido
