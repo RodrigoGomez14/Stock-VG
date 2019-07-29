@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/Stock-VG/static/css/main.49389a8e.chunk.css",
-    "main.js": "/Stock-VG/static/js/main.3eb295bc.chunk.js",
-    "main.js.map": "/Stock-VG/static/js/main.3eb295bc.chunk.js.map",
+    "main.css": "/Stock-VG/static/css/main.42ac7a82.chunk.css",
+    "main.js": "/Stock-VG/static/js/main.da06eed1.chunk.js",
+    "main.js.map": "/Stock-VG/static/js/main.da06eed1.chunk.js.map",
     "runtime~main.js": "/Stock-VG/static/js/runtime~main.81393213.js",
     "runtime~main.js.map": "/Stock-VG/static/js/runtime~main.81393213.js.map",
-    "static/css/2.568101d1.chunk.css": "/Stock-VG/static/css/2.568101d1.chunk.css",
-    "static/js/2.dc58944f.chunk.js": "/Stock-VG/static/js/2.dc58944f.chunk.js",
-    "static/js/2.dc58944f.chunk.js.map": "/Stock-VG/static/js/2.dc58944f.chunk.js.map",
+    "static/css/2.a9d9f6cb.chunk.css": "/Stock-VG/static/css/2.a9d9f6cb.chunk.css",
+    "static/js/2.1cb0fe09.chunk.js": "/Stock-VG/static/js/2.1cb0fe09.chunk.js",
+    "static/js/2.1cb0fe09.chunk.js.map": "/Stock-VG/static/js/2.1cb0fe09.chunk.js.map",
     "index.html": "/Stock-VG/index.html",
-    "precache-manifest.c04220c9cc2b804d82204af8a516a432.js": "/Stock-VG/precache-manifest.c04220c9cc2b804d82204af8a516a432.js",
+    "precache-manifest.e1e8b74f15485ea1f7679acdff6505f5.js": "/Stock-VG/precache-manifest.e1e8b74f15485ea1f7679acdff6505f5.js",
     "service-worker.js": "/Stock-VG/service-worker.js",
-    "static/css/2.568101d1.chunk.css.map": "/Stock-VG/static/css/2.568101d1.chunk.css.map",
-    "static/css/main.49389a8e.chunk.css.map": "/Stock-VG/static/css/main.49389a8e.chunk.css.map",
+    "static/css/2.a9d9f6cb.chunk.css.map": "/Stock-VG/static/css/2.a9d9f6cb.chunk.css.map",
+    "static/css/main.42ac7a82.chunk.css.map": "/Stock-VG/static/css/main.42ac7a82.chunk.css.map",
     "static/media/Abrazadera.png": "/Stock-VG/static/media/Abrazadera.7b81f5c2.png",
     "static/media/AntiSalpicaduraAmarillo.png": "/Stock-VG/static/media/AntiSalpicaduraAmarillo.1d0b2d23.png",
     "static/media/AntiSalpicaduraAzul.png": "/Stock-VG/static/media/AntiSalpicaduraAzul.48be2df5.png",
@@ -62,7 +62,7 @@
     "static/media/WayneDobleDL1.png": "/Stock-VG/static/media/WayneDobleDL1.328352a3.png",
     "static/media/WayneSimpleCentury.png": "/Stock-VG/static/media/WayneSimpleCentury.41fbd6cb.png",
     "static/media/WayneSimpleDL1.png": "/Stock-VG/static/media/WayneSimpleDL1.36d8b959.png",
-    "static/media/balde.png": "/Stock-VG/static/media/balde.2e97b403.png",
+    "static/media/balde.png": "/Stock-VG/static/media/balde.382ca754.png",
     "static/media/logo.png": "/Stock-VG/static/media/logo.cf936f02.png"
   }
 }
